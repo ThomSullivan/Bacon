@@ -1,0 +1,37 @@
+{% extends 'bootstrap.html' %}
+{% load app_tags %}
+{% block content %}
+<style>
+#grav_profile {
+    width: auto;
+    height: 100px;
+  padding: 2px 5px 0px 0px;
+    border-radius:8px;
+}
+</style>
+{% if user.is_authenticated %}
+<p>
+{% if  user_profile.socialaccount_set.all.0.get_avatar_url  %}
+     <img  id='grav_profile' src="{{ user_profile.socialaccount_set.all.0.get_avatar_url }}"/>
+     {% else%}
+     <img id='grav_profile' src="{{ user_profile|gravatar:60 }}"/>
+     {% endif %}{{ profile.user}}
+</p>
+<h1>Largest Bacon number found: {{ profile.longest }}</h1>
+<h1>Favorite Routes</h1>
+{% if favs %}
+    <ul>
+    {% for fav in favs %}
+    <p><a href='/routes/result/{{ fav.1 }}'>{{fav.0}}</a></p>
+    {% endfor %}
+    </ul>
+{% else %}
+<p>No favorites yet! go search a <a href='/'>route</a> to get started!</p>
+{% endif %}
+{% else %}
+<p>please <a href='/accounts/login/?next={{ request.path }}'>log in</a> to view profiles</p>
+{% endif %}
+
+
+
+{% endblock %}

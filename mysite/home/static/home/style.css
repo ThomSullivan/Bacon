@@ -1,0 +1,137 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom:50px;
+  background-color:#1f2933;
+
+}
+p {
+    color:#f5f7fa;
+}
+h1 {
+    color:#f5f7fa;
+}
+h2 {
+    color:#f5f7fa;
+}
+sub {
+  color:#f5f7fa;
+}
+
+a:link {
+    color:#cbd2d9;
+}
+A:visited {
+  color:#7b8794;
+}
+.navbar {
+  overflow: hidden;
+  padding-top:10px;
+  padding-bottom:10px;
+  background-color: #3e4c59;
+}
+
+
+.navbar a {
+  left:0;
+  font-size: 14px;
+  color: #f5f7fa;
+  font-weight: bold;
+  text-align: center;
+
+  text-decoration: none;
+  margin:4px;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+  right : 0;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  color: #f5f7fa;
+
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  right : 0;
+
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #ededf0;
+  padding: 10px;
+  color: #5B5B66;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right : 0;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  font-size:1em;
+
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+#grav {
+    width: auto;
+    height: 42px;
+  padding: 2px 5px 0px 0px;
+    border-radius:8px;
+}
+.logout {
+    display:block;
+
+  padding: 12px 16px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right : 0;
+  font-size:1em;
+}
+.logout:hover {
+    background-color: #ddd;
+}
+.footer {
+  display:table;
+  position:fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #3e4c59;
+  color: white;
+  text-align: center;
+  padding:10px;
+  left:0;
+}
+.footer_image {
+    height:1em;
+}
+.side_ad {
+    position: fixed;
+    right: 0;
+    width: 10%;
+}

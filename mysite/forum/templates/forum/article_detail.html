@@ -1,0 +1,60 @@
+{% extends "bootstrap.html" %}
+{% load app_tags %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+{% block content %}
+<span style="float: right;">
+
+{% if article.owner == user %}
+<a href="{% url 'forum:article_update' article.id %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'forum:article_delete' article.id %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+<h1>{{ article.title }}</h1>
+<p><a href='/user/{{ article.owner.id }}'>
+{% if  article.owner.socialaccount_set.all.0.get_avatar_url  %}
+     <img  id='grav' src="{{ article.owner.socialaccount_set.all.0.get_avatar_url }}"/>
+    {% else%}
+     <img  id='grav' src="{{ article.owner|gravatar:60 }}"/>
+     {% endif %}
+</a>
+({{ article.updated_at|naturaltime }}) by {{ article.owner }}
+
+
+</p>
+<p>
+{{ article.text }}
+</p>
+<p>
+    {% if user.is_authenticated %}
+<br clear="all"/>
+
+{% load crispy_forms_tags %}
+<form method="post" action="{% url 'forum:article_comment_create' article.id %}">
+    {% csrf_token %}
+    {{ comment_form| crispy }}
+<input type="submit" value="Comment">
+
+</form>
+
+{% endif %}
+{% for comment in comments %}
+<a href='/user/{{ comment.owner.id }}'>
+    {% if  comment.owner.socialaccount_set.all.0.get_avatar_url  %}
+         <img  id='grav' src="{{ comment.owner.socialaccount_set.all.0.get_avatar_url }}"/>
+        {% else%}
+         <img  id='grav' src="{{ comment.owner|gravatar:60 }}"/>
+     {% endif %}
+     </a>
+<sub>(by {{ comment.owner }} {{ comment.updated_at|naturaltime }})</sub>
+{% if user == comment.owner %}
+<a href="{% url 'forum:article_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+
+       <p> {{ comment.text }} </p>
+{% endfor %}
+
+
+
+<a href="{% url 'forum:all' %}">All articles</a>
+
+{% endblock %}

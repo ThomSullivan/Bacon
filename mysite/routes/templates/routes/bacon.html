@@ -1,0 +1,15 @@
+{% extends 'bootstrap.html' %}
+{% block content %}
+{% load static %}
+<style>
+    .Center {
+
+    text-align:center;
+}
+</style>
+<div class='Center'>
+<h1>You found the secret Bacon</h1>
+<img style='width:20em;' src='{% static "img/bacon1.jpg" %}'>
+<p><a href='/'>Search again</a></p>
+</div>
+{% endblock%}

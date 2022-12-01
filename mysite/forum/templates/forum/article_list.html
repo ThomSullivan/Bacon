@@ -1,0 +1,26 @@
+{% extends "bootstrap.html" %}
+{% block content %}
+<h1>Discussions</h1>
+<p>
+{% if article_list %}
+<ul>
+  {% for article in article_list %}
+    <li>
+        <a href="{% url 'forum:article_detail'  article.id %}">{{ article.title }}</a>
+        {% if article.owner == user %}
+        (<a href="{% url 'forum:article_update' article.id %}">Edit</a> |
+        <a href="{% url 'forum:article_delete' article.id %}">Delete</a>)
+        {% endif %}
+        <sub>{{ article.comments.count }} comments</sub>
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>There are no articles in the database.</p>
+{% endif %}
+</p>
+<p>
+<a href="{% url 'forum:article_create' %}">Add a discussion</a>
+
+</p>
+{% endblock %}
