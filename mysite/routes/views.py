@@ -132,5 +132,3 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
-        return HttpResponse()
-        return HttpResponse()
