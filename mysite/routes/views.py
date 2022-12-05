@@ -100,7 +100,13 @@ def search_pk(request):
     try:
         x = Person.objects.get(name=person_id)
     except:
-        x = Person.objects.filter(name=person_id)[0]
+        #This grabs the first person is many people are returned
+        try:
+            x = Person.objects.filter(name=person_id)[0]
+        except:
+            #Error handling for someone not in the local DB
+            ctx = {'error':True}
+            return render(request, 'home/home.html', ctx)
     parameter = x.pk
 
     return redirect('/routes/result/' + str(parameter))

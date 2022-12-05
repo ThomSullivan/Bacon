@@ -1,6 +1,8 @@
-<html>
-
-<h1>Sign Up</h1>
+{% extends 'bootstrap.html' %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
 
 {% for field in form %}
     <div class="fieldWrapper">
@@ -21,13 +23,9 @@
 <p><label for="id_password2">Password (again):</label> <input type="password" name="password2" placeholder="Password (again)" required="" id="id_password2"></p>
 
   <button type="submit">Sign Up »</button>
+  <input type="hidden" name="next" value="/" />
 </form>
 
 
 
-
-
-
-
-</body>
-</html>
+{% endblock %}
