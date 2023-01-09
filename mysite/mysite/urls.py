@@ -26,4 +26,5 @@ urlpatterns = [
     path('routes/', include('routes.urls'), name='routes'),
     path('accounts/', include('allauth.urls'), name='account'),
     path('forum/', include('forum.urls'), name='forum'),
+    path('api/', include('api.urls'), name='api'),
 ]
