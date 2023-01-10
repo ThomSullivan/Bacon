@@ -16,15 +16,15 @@ class UsernameHelperSerializer(serializers.ModelSerializer):
         fields = ['username']
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    def get_favorites(self, obj):
+        favorites = Person.objects.filter(favorites=obj.id)
+        favorites = favorites.values()
+        return favorites
+    favorites = serializers.SerializerMethodField('get_favorites')
     user = UsernameHelperSerializer()
     class Meta():
         model = Profile
-        fields = '__all__'
-
-class UserFavoritesSerializer(serializers.ModelSerializer):
-    class Meta():
-        model = Person
-        fields = ['name','real_name']
+        fields = ['id','user','longest','favorite_bacon','favorites']
 
 class ArticlePostSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(
@@ -50,14 +50,13 @@ class ArticleDetailHelperSerializer(serializers.ModelSerializer):
     owner = OwnerSerializer()
     class Meta():
         model = Comment
-        fields = ['owner','text']
+        fields = ['id','owner','text']
 
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
     def get_comments(self, obj):
         comments = Comment.objects.filter(article=obj.id).order_by('-updated_at')
-        comments = comments.values('text','owner__username', 'created_at')
-        print(comments)
+        comments = comments.values('id','text','owner__username', 'created_at')
         return comments
 
     comments = serializers.SerializerMethodField('get_comments')
@@ -74,4 +73,24 @@ class CommentAddSerializer(serializers.ModelSerializer):
             'text': {'min_length': 1},
         }
     
+class CommentDeleteSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = Comment
+        fields = ['id']
+
+class ChampionViewSerializer(serializers.ModelSerializer):
+    def get_username(self, obj):
+        user = User.objects.get(pk=obj.user.id)
+        return user.username
+    user = serializers.SerializerMethodField('get_username')
+    class Meta():
+        model = Profile
+        fields = ['user','longest']
+
+class TopTenSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = Person
+        fields = "__all__"
+
+ 
    
