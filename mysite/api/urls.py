@@ -10,4 +10,5 @@ urlpatterns = [
     path('champions', views.ChampionsView.as_view()),
     path('statistics', views.StatisticsView.as_view({'get':'list'})),
     path('top-ten', views.TopTenView.as_view()),
+    path('routes', views.ResultDetailView.as_view({'get':'list','patch':'patch'}))
 ]

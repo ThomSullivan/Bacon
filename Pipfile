@@ -13,6 +13,7 @@ django-allauth = "*"
 djoser = "*"
 django-filter = "*"
 django-rest-authtoken = "*"
+djangorestframework-xml = "*"
 
 [dev-packages]
 

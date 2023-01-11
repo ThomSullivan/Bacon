@@ -90,7 +90,7 @@ class ChampionViewSerializer(serializers.ModelSerializer):
 class TopTenSerializer(serializers.ModelSerializer):
     class Meta():
         model = Person
-        fields = "__all__"
+        fields = ['real_name','favorites']
 
  
    
