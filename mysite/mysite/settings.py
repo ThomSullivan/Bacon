@@ -33,6 +33,7 @@ DEBUG = False
 APP_NAME = 'Six Degrees of Bacon'
 ALLOWED_HOSTS = ['*']
 
+
 TMDB_API_KEY = env('TMDB_API_KEY')
 
 # Application definition
@@ -137,7 +138,10 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-        #'rest_framework_xml.renderers.XMLRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework_xml.parsers.XMLParser',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -165,6 +169,11 @@ REST_FRAMEWORK = {
         'user': '100/minute',
     },
 }
+
+if not DEBUG:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
+            "rest_framework.renderers.JSONRenderer",
+        )
 
 DJOSER = {
     'USER_ID_FIELD' : 'id'
