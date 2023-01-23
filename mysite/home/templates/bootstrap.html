@@ -4,83 +4,77 @@
 <html>
 <head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-N23DMH423F');
+  </script>
 
-  gtag('config', 'G-N23DMH423F');
-</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+  crossorigin="anonymous"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"
+  crossorigin="anonymous"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"
-    crossorigin="anonymous"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
-
-
-<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="img/ico "/>
-{% if title %}
-<!--first item in ctx['title'] in view to set custom title-->
-<title>{{ title.0 }}</title>
-{% else %}
-<title>Six Degrees of Bacon</title>
-{% endif %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="img/ico "/>
+  {% if title %}
+  <!--first item in ctx['title'] in view to set custom title-->
+    <title>
+      {{ title.0 }}
+    </title>
+  {% else %}
+    <title>
+      Six Degrees of Bacon
+    </title>
+  {% endif %}
 </head>
 
 <body class="body">
-
-
-
-
-<div class="navbar">
-  <a href='/'>Home</a>
-
-  <a href='/topten'>Top Ten</a>
-  <a href='/statistics'>Stats</a>
-  <a href='/champions'>Champions</a>
-  {% if user.is_authenticated %}
-<div class="dropdown" style='float:right;'>
-  <button class="dropbtn">
-      Account
-  </button>
-  <div class="dropdown-content">
-     <a href='/user/{{user.id}}'>Profile</a>
-     <a href='/forum'>Forum</a>
-    <form method='post' action='/accounts/logout/'>
-        {% csrf_token %}
-    <button type='submit' class='logout'>Logout</button>
-    </form>
+  <div class="navbar">
+    <a href='/'>Home</a>
+    <a href='/topten'>Top Ten</a>
+    <a href='/statistics'>Stats</a>
+    <a href='/champions'>Champions</a>
+    {% if user.is_authenticated %}
+      <div class="dropdown" style='float:right;'>
+        <button class="dropbtn">
+          Account
+        </button>
+        <div class="dropdown-content">
+          <a href='/user/{{user.id}}'>Profile</a>
+          <a href='/forum'>Forum</a>
+          <form method='post' action='/accounts/logout/'>
+          {% csrf_token %}
+          <button type='submit' class='logout'>Logout</button>
+          </form>
+        </div>
+      </div>      
     {% else %}
-     <div class="dropdown" style='float:right;'>
-      <button class="dropbtn">Account</button>
-      <div class="dropdown-content">
-        <a href='/accounts/login/?next={{ request.path }}'>Login</a>
+      <div class="dropdown" style='float:right;'>
+        <button class="dropbtn">
+          Account
+        </button>
+        <div class="dropdown-content">
+          <a href='/accounts/login/?next={{ request.path }}'>Login</a>
+        </div>
       </div>
-    </div>
-    {% endif %}
-    <!--  <a href="#">Link 1</a> **/ -->
+    {% endif %}       
   </div>
-</div>
-</div>
+  {% block content %}
 
 
+  
+  {% endblock %}
 
-
-
-{% block content %}
-
-
-{% endblock %}
-
-<div class="footer">
-  <p style="text-align: center;vertical-align: middle;display: table-cell;">All data and images provided by <a href='https://www.themoviedb.org/'><img class='footer_image' src="{% static 'img/tmdb1.svg' %}"></a></p>
-</div>
+  <div class="footer">
+    <p style="text-align: center;vertical-align: middle;display: table-cell;">All data and images provided by <a href='https://www.themoviedb.org/'><img class='footer_image' src="{% static 'img/tmdb1.svg' %}"></a></p>
+  </div>
 </body>
 </html>
