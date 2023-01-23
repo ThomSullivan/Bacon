@@ -32,40 +32,46 @@ class ResultDetailView(OwnerDetailView):
     model = Person
     template_name = 'routes/results.html'
     def get(self, request, pk):
+        ##ROUTE FINDING
         ctx = {'degrees':[], 'pk' : pk, 'title':[]}
         bacon = False
         person_id = pk
         while bacon == False:
-            try:
-                x = Person.objects.get(pk=person_id)
-            except:
-                x = Person.objects.filter(pk=person_id)[0]
-            # x is not a person object
-            #checking for a local stored name and getting one if not
+            x = Person.objects.get(pk=person_id)
+            #Human readable names are filled as they are searched to save DB space
             if x.real_name == '':
-                q = x.name
-                info = get_person_info(q)
-                x.real_name = info[0]
-                x.img_path = info[1]
+                info = get_person_info(x.name)
+                x.real_name, x.img_path = info[0], info[1]
                 x.save()
             # get a step object as y using x object as a parameter
             person = (x.name, x.real_name, x.img_path,x.bacon_number)
-            ctx['title'].append(x.real_name)
             y = Step.objects.get(person=x)
-            if y.movie.real_title == '':
-                q = y.movie.title
-                info = get_movie_info(q)
-                y.movie.real_title = info[0]
-                y.movie.img_path = info[1]
-                y.movie.save()
-            movie = (y.movie.title, y.movie.real_title, y.movie.img_path)
+            movie = Movie.objects.get(pk=y.movie.id)
+            #Human readable names are filled as they are searched to save DB space
+            if movie.real_title == '':
+                info = get_movie_info(y.movie.title)
+                movie.real_title, movie.img_path = info[0], info[1]
+                movie.save()
+            movie = (movie.title, movie.real_title, movie.img_path)
             ctx['degrees'].append((person, movie))
 
-            if y.next_step.name == 4724:
-                bacon = True
-            else:
+            if y.next_step.name != 4724:
                 person_id = y.next_step.id
+                continue
+            bacon = True
 
+        searched_person = Person.objects.get(pk=pk)  
+        ctx['title'].append(searched_person.real_name)
+        ctx['number_of_searches'] = searched_person.number_of_searches
+
+        ##GAME FEATURES
+        if 'search' in request.GET:
+            #Only does stuff if the request came from the search page
+            searched_person.number_of_searches += 1
+            searched_person.save()
+            ctx['search'] = True
+        
+        ##USER OPERATIONS
         #check to see for favorite status
         favorites = list()
         if request.user.is_authenticated:
@@ -75,14 +81,12 @@ class ResultDetailView(OwnerDetailView):
             favorites = [ row['pk'] for row in rows ]
             ctx['favorites'] = favorites
 
-            current = Person.objects.get(id=pk)
             profile = Profile.objects.get(user=request.user.id)
-            if current.bacon_number > profile.longest:
-                profile.longest = current.bacon_number
+            if searched_person.bacon_number > profile.longest and 'search' in request.GET:
+                #Sets a new user record if request came from search page
+                profile.longest = searched_person.bacon_number
                 profile.save()
                 ctx['record']=True
-
-
 
         return render(request, self.template_name, ctx)
 
@@ -109,7 +113,7 @@ def search_pk(request):
             return render(request, 'home/home.html', ctx)
     parameter = x.pk
 
-    return redirect('/routes/result/' + str(parameter))
+    return redirect('/routes/result/' + str(parameter)+'?search=True')
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
