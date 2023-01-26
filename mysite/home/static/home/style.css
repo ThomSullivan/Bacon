@@ -18,10 +18,10 @@ sub {
 }
 
 a:link {
-    color:#cbd2d9;
+    color:#b4bfc9;
 }
 A:visited {
-  color:#7b8794;
+  color:#ffffff;
 }
 .navbar {
   overflow: hidden;

@@ -32,45 +32,21 @@ class ResultDetailView(OwnerDetailView):
     model = Person
     template_name = 'routes/results.html'
     def get(self, request, pk):
-        ##ROUTE FINDING
+        
         ctx = {'degrees':[], 'pk' : pk, 'title':[]}
         bacon = False
-        person_id = pk
-        while bacon == False:
-            x = Person.objects.get(pk=person_id)
-            #Human readable names are filled as they are searched to save DB space
-            if x.real_name == '':
-                info = get_person_info(x.name)
-                x.real_name, x.img_path = info[0], info[1]
-                x.save()
-            # get a step object as y using x object as a parameter
-            person = (x.name, x.real_name, x.img_path,x.bacon_number)
-            y = Step.objects.get(person=x)
-            movie = Movie.objects.get(pk=y.movie.id)
-            #Human readable names are filled as they are searched to save DB space
-            if movie.real_title == '':
-                info = get_movie_info(y.movie.title)
-                movie.real_title, movie.img_path = info[0], info[1]
-                movie.save()
-            movie = (movie.title, movie.real_title, movie.img_path)
-            ctx['degrees'].append((person, movie))
-
-            if y.next_step.name != 4724:
-                person_id = y.next_step.id
-                continue
-            bacon = True
-
-        searched_person = Person.objects.get(pk=pk)  
-        ctx['title'].append(searched_person.real_name)
-        ctx['number_of_searches'] = searched_person.number_of_searches
+        person = Person.objects.get(pk=pk)  
+        ctx['title'].append(person.real_name)
 
         ##GAME FEATURES
         if 'search' in request.GET:
             #Only does stuff if the request came from the search page
-            searched_person.number_of_searches += 1
-            searched_person.save()
+            person.number_of_searches += 1
+            person.save()
             ctx['search'] = True
-        
+
+        ctx['number_of_searches'] = person.number_of_searches
+
         ##USER OPERATIONS
         #check to see for favorite status
         favorites = list()
@@ -82,11 +58,37 @@ class ResultDetailView(OwnerDetailView):
             ctx['favorites'] = favorites
 
             profile = Profile.objects.get(user=request.user.id)
-            if searched_person.bacon_number > profile.longest and 'search' in request.GET:
+            if person.bacon_number > profile.longest and 'search' in request.GET:
                 #Sets a new user record if request came from search page
-                profile.longest = searched_person.bacon_number
+                profile.longest = person.bacon_number
                 profile.save()
                 ctx['record']=True
+
+        ##ROUTE FINDING
+        while bacon == False:
+            y = Step.objects.filter(person=person)[0]
+            #Human readable names are filled as they are searched to save DB space
+            if y.person.real_name == '':
+                info = get_person_info(y.person.name)
+                y.person.real_name, y.person.img_path = info[0], info[1]
+                y.person.save()
+            personInfo = (y.person.name, y.person.real_name, y.person.img_path, y.person.bacon_number)
+            
+            #Human readable names are filled as they are searched to save DB space
+            if y.movie.real_title == '':
+                info = get_movie_info(y.movie.title)
+                y.movie.real_title, y.movie.img_path = info[0], info[1]
+                y.movie.save()
+            movie = (y.movie.title, y.movie.real_title, y.movie.img_path)
+            ctx['degrees'].append((personInfo, movie))
+            if y.next_step.name != 4724:
+                person = y.next_step
+                continue
+            bacon = True
+
+        
+
+        
 
         return render(request, self.template_name, ctx)
 
