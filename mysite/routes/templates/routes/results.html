@@ -2,102 +2,152 @@
 {% block content %}
 {% load static %}
 
-<style>
-    .img{
-        width:40%;
-    }
-    .Center {
 
-    text-align:center;
-    }
-</style>
-
-<div class='Center'>
         
-    {% if user.is_authenticated %}
-        <p> 
-            <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+    
 
-            <a href="#" onclick=
-                    "favPost('{% url 'routes:person_unfavorite' pk %}', {{ pk }} );return false;"
-                    {% if pk not in favorites %} style="display: none;" {% endif %}
-                    id="favorite_star_{{pk}}">
-                <span class="fa-stack" style="vertical-align: middle;">
-                    <i class="fa fa-star fa-stack-1x" style="color:orange;"></i>
-                    <i class="fa fa-star-o fa-stack-1x"></i>
-                </span>
-            </a>
-            <!-- the second href -->
-            <a href="#" onclick=
-                    "favPost('{% url 'routes:person_favorite' pk %}', {{ pk }} );return false;"
-                    {% if pk in favorites %} style="display: none;" {% endif %}
-                    id="unfavorite_star_{{pk}}">
-                <span class="fa-stack" style="vertical-align: middle;">
-                    <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
-                    <i class="fa fa-star-o fa-stack-1x"></i>
-                </span>
-            </a>
-            Favorite this route
-        </p>
-    {% else %}
-        <p>
-            <a href='/accounts/login/?next={{ request.path }}'>Log in to</a>to favorite this route
-        </p>
-    {% endif %}
-
-    {% if search == True %}
+    <!-- {% if search == True %}
         <h1>
             This came from a search
         </h1>
-    {% endif %}
+    {% endif %} -->
 
-    {% if  record  == True %}
-        <h1>
-            Congrats you found a larger Bacon number!
-        </h1>
-    {% endif %}
+    
+        
+    
+    <div class="container-fluid">
+        {% if  record  == True %}
+        <div class="Center">
+            <div class="alert alert-primary alert-sm" role="alert">
+                <h2>Congrats you found a larger Bacon number!</h2>
+            </div>
+        </div>
+                    
+        {% endif %}
+        
+        <div class="row-12 justify-content-center">
+            <div class="col-auto ">
+                <div class="Center">
+                    <h1>
+                        {{ degrees.0.0.1 }} has a Bacon number of: <span style='font-weight:bold'>{{ degrees.0.0.3 }}</span>
+                    <h1>
+                </div>
+            </div>
+        </div>
+        <div class="row-12 justify-content-center">
+            <div class="col-auto">
+                <div class="Center">
+                    <h2>
+                        and has been searched {{ number_of_searches }} times.
+                    <h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-auto ">
+                {% if user.is_authenticated %}
+                    <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+                    <a href="#" onclick=
+                            "favPost('{% url 'routes:person_unfavorite' pk %}', {{ pk }} );return false;"
+                            {% if pk not in favorites %} style="display: none;"{% endif %}
+                            id="favorite_star_{{pk}}">
+                        <span class="fa-stack" style="vertical-align: middle; ">
+                            <i class="fa fa-star fa-stack-1x" style="color:orange;"></i>
+                            <i class="fa fa-star-o fa-stack-1x"></i>
+                        </span>
+                    </a>
+                    <!-- the second href -->
+                    <a href="#" onclick=
+                            "favPost('{% url 'routes:person_favorite' pk %}', {{ pk }} );return false;"
+                            {% if pk in favorites %} style="display: none;" {% endif %}
+                            id="unfavorite_star_{{pk}}">
+                        <span class="fa-stack" style="vertical-align: middle;">
+                            <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+                            <i class="fa fa-star-o fa-stack-1x"></i>
+                        </span>
+                    </a>
+                    Favorite this route
+                {% else %}
+                    <p>
+                        <a href='/accounts/login/?next={{ request.path }}?search=True'>Log in</a>&nbsp;to favorite this route
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <hr class="hr hr-blurry" />
+            </div>
+        </div>
 
-    <h1>
-        {{ degrees.0.0.1 }} has a Bacon number of: <span style='font-weight:bold'>{{ degrees.0.0.3 }}</span>
-    </h1>
-    <h2>
-        {{ degrees.0.0.1 }} has been searched {{ number_of_searches }} times.
-    </h2>
-    {% for degree in degrees %}
-        <p>
-            {{ degree.0.1 }}, who was in {{ degree.1.1 }} with
-        </p>
-        <a href='https://www.themoviedb.org/person/{{ degree.0.0 }}'>
-            {% if  degree.0.2   %}
-                <img class='img' src="https://image.tmdb.org/t/p/w500{{ degree.0.2 }}" alt="{{ degree.0.1 }}">
-            {% else %}
-                <img class='img' src='{% static "img/person_placeholder.png" %}'>
-            {% endif %}
-        </a>
-        <a href='https://www.themoviedb.org/movie/{{ degree.1.0 }}'>
-            {% if  degree.1.2   %}
-                <img class='img' src="https://image.tmdb.org/t/p/w500{{ degree.1.2 }}" alt="{{ degree.1.1 }}">
-            {% else %}
-                <img class='img' src='{% static "img/movie_placeholder.png" %}'>
-            {% endif %}
+        {% for degree in degrees %}
+            <div class="row-12 justify-content-center">
+                <div class="col-auto">
+                    <div class="Center">
+                    <h2>
+                        {{ degree.0.1 }}, who was in {{ degree.1.1 }} with...    
+                    </h2>
+                </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="float-right">
+                    <a style="text-decoration: none;" href='https://www.themoviedb.org/person/{{ degree.0.0 }}'>
+                        {% if  degree.0.2   %}
+                            <img class='img-fluid' src="https://image.tmdb.org/t/p/w500{{ degree.0.2 }}" alt="{{ degree.0.1 }}">
+                        {% else %}
+                            <img class='img-fluid' src='{% static "img/person_placeholder.png" %}'>
+                        {% endif %}
+                    </a>
+                    </div>
+                </div>    
+                <div class="col-6">
+                    <a href='https://www.themoviedb.org/movie/{{ degree.1.0 }}'>
+                        {% if  degree.1.2   %}
+                            <img class='img-fluid' src="https://image.tmdb.org/t/p/w500{{ degree.1.2 }}" alt="{{ degree.1.1 }}">
+                        {% else %}
+                            <img class='img-fluid' src='{% static "img/movie_placeholder.png" %}'>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row justify-content-center">
+            <h1>
+                Kevin Bacon!
+            </h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6 ">
+                <div class="Center">
 
-        </a>
-    {% endfor %}
-
-
-    <h1>
-        Kevin Bacon!
-    </h1>
-    <p class='p'>
-        Know of a shorter route? let everyone know over at the <a href={% url 'forum:all' %}> forum</a>
-        <a href="{% url 'home:home' %}">Search again</a>
-    </p>
-    <img class ='img' src="https://image.tmdb.org/t/p/w500/rjX2Oz3tCZMfSwOoIAyEhdtXnTE.jpg">
-    <p class="p">All cast lists and images provided by <a href='https://www.themoviedb.org/'><img class='footer_image' src="{% static 'img/tmdb1.svg' %}"></a></p>
-</div>
-
-
-
+                   <img class="img-fluid" src="https://image.tmdb.org/t/p/w500/rjX2Oz3tCZMfSwOoIAyEhdtXnTE.jpg">
+                </div>
+            </div>
+            
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h1>
+                    <p>All cast lists and images provided by <a href='https://www.themoviedb.org/'><img class='footer_image' src="{% static 'img/tmdb1.svg' %}"></a></p>
+                </h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h1>
+                    <p>
+                        Know of a shorter route? let everyone know over at the <a href={% url 'forum:all' %}> forum</a>
+                        <a href="{% url 'home:home' %}">Search again</a>
+                    </p>
+                </h1>
+            </div>
+        </div>
+    </div>
+    
 
 
 <script>

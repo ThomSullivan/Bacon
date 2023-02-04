@@ -1,40 +1,30 @@
 {% extends 'bootstrap.html' %}
 {% load static %}
 {% block content %}
-<style>
-    .img{
-        width:25%;
 
-
-
-    }
-    .center {
-        position:relative;
-        left:30%;
-    }
-    .a {
-        font-size:2em;
-
-
-    }
-</style>
-<h1>Most Favorited Routes</h1>
-
-
-{% for person in person_list %}
-
-
-        <p> <span style='font-size:3em;'>{{person.3}}.</span>
-
-        {% if  person.1  == None %}
-    <img class='img' src='{% static "img/person_placeholder.png" %}'>
-        {% else %}
-    <img class='img' src="https://image.tmdb.org/t/p/w500{{ person.1 }}" alt="{{ person.0 }}">
-        {% endif %}
-        <a  href='/routes/result/{{ person.2 }}'>{{ person.0 }}</a></p>
-
-
-
-{% endfor %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <h1>
+                    Most Favorited Routes
+                </h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+        {% for person in person_list %}
+            <div class=" col-lg-3 col-sm-4 col-6">
+                <h3>
+                    {{person.3}}
+                    <a  href='/routes/result/{{ person.2 }}'>{{ person.0 }}</a>
+                </h3>
+                {% if  person.1  == None %}
+                    <img class='img-fluid' src='{% static "img/person_placeholder.png" %}' alt="Placeholder image">
+                {% else %}
+                    <img class='img-fluid' src="https://image.tmdb.org/t/p/w500{{ person.1 }}" alt="{{ person.0 }}">
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 

@@ -1,16 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 import requests
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from mysite.settings import TMDB_API_KEY
-from .models import Step, Person, Movie, Fav
-# Create your views here.
 from django.views import View
-from django.views.generic import DetailView
-from .owner import OwnerDetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+
 from home.models import Profile
-from django.contrib.auth.models import User
+from .owner import OwnerDetailView
+from .models import Step, Person, Fav
+
 
 def get_person_info(name):
     details = 'https://api.themoviedb.org/3/person/{}?api_key={}'.format(name, TMDB_API_KEY)
@@ -99,8 +98,7 @@ def search_pk(request):
     try:
         person_id = object['results'][0]['id']
     except:
-        ctx = {'error':True}
-        return render(request, 'home/home.html', ctx)
+        return redirect('/?error=True')
     if person_id == 4724:
         return redirect('/routes/bacon')
     try:
@@ -111,8 +109,7 @@ def search_pk(request):
             x = Person.objects.filter(name=person_id)[0]
         except:
             #Error handling for someone not in the local DB
-            ctx = {'error':True}
-            return render(request, 'home/home.html', ctx)
+            return redirect('/?error=True')
     parameter = x.pk
 
     return redirect('/routes/result/' + str(parameter)+'?search=True')

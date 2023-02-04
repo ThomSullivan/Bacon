@@ -2,120 +2,73 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom:50px;
   background-color:#1f2933;
+  color:#f5f7fa;
+}
 
+hr {
+  background-color: #a7b4c0;
 }
-p {
-    color:#f5f7fa;
+.Center {
+
+    text-align:center;
 }
+
 h1 {
-    color:#f5f7fa;
+  font-size: 5.0vmin;
 }
 h2 {
-    color:#f5f7fa;
+  font-size: 4.0vmin;
 }
+h3 {
+  font-size: 3.0vmin;
+}
+p {
+  font-size: 2.75vmin;
+}
+
 sub {
   color:#f5f7fa;
 }
 
+.error {
+    color:red;
+}
 a:link {
     color:#b4bfc9;
 }
 A:visited {
-  color:#ffffff;
-}
-.navbar {
-  overflow: hidden;
-  padding-top:10px;
-  padding-bottom:10px;
-  background-color: #3e4c59;
+  color:#a7b4c0;
 }
 
-
-.navbar a {
-  left:0;
-  font-size: 14px;
-  color: #f5f7fa;
-  font-weight: bold;
-  text-align: center;
-
-  text-decoration: none;
-  margin:4px;
+.img{
+  width: 50%;
+  max-width: 500px;
 }
 
-.dropdown {
-  float: left;
-  overflow: hidden;
-  right : 0;
+#grav_profile {
+  width: auto;
+  height: 100px;
+padding: 2px 5px 0px 0px;
+  border-radius:8px;
 }
 
-.dropdown .dropbtn {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  font-weight: bold;
-  color: #f5f7fa;
-
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
-  right : 0;
-
-}
-
-.navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: #ededf0;
-  padding: 10px;
-  color: #5B5B66;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  right : 0;
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  font-size:1em;
-
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 #grav {
     width: auto;
     height: 42px;
-  padding: 2px 5px 0px 0px;
+    padding: 2px 5px 0px 0px;
     border-radius:8px;
 }
-.logout {
-    display:block;
+.logoutButton {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #069;
+  cursor: pointer;
+}
 
-  padding: 12px 16px;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  right : 0;
-  font-size:1em;
-}
-.logout:hover {
-    background-color: #ddd;
-}
 .footer {
   display:table;
   position:fixed;
@@ -126,12 +79,7 @@ A:visited {
   text-align: center;
   padding:10px;
   left:0;
-}
+} 
 .footer_image {
     height:1em;
-}
-.side_ad {
-    position: fixed;
-    right: 0;
-    width: 10%;
 }

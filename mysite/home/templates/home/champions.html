@@ -1,11 +1,6 @@
 {% extends 'bootstrap.html' %}
 {% block content %}
-<style>
-    .Center {
 
-    text-align:center;
-}
-</style>
 <h1 class='Center'>People who have found the largest bacon numbers.</h1>
 {% for champ in champ_list %}
 <p class='Center'>{{ champ.0 }} found a Bacon number of {{ champ.1 }}</p>

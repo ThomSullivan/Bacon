@@ -1,0 +1,45 @@
+{% extends 'bootstrap.html' %}
+{% load socialaccount %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="Center">
+    <div class="container">
+        <div class="row">
+            <h1>
+                {% trans "Verify Your E-mail Address" %}
+            </h1>
+        </div>
+        <div class="col-12">
+            <hr class="hr hr-blurry" />
+        </div>
+        <div class="row">
+            {% url 'account_email' as email_url %}
+        </div>
+        <div class="row">
+            <p>{% blocktrans %}This part of the site requires us to verify that
+                you are who you claim to be. For this purpose, we require that you
+                verify ownership of your e-mail address. {% endblocktrans %}
+            </p>
+        </div>
+        <div class="row">
+            <p>{% blocktrans %}We have sent an e-mail to you for
+                verification. Please click on the link inside that e-mail. If you do not see the verification e-mail in your main inbox, check your spam folder. Otherwise
+                contact us if you do not receive it within a few minutes.{% endblocktrans %}
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                {% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
