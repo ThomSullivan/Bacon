@@ -1,36 +1,47 @@
 {% extends "bootstrap.html" %}
 {% block content %}
-<style>
-        .Center {
 
-    text-align:center;
-}
-.p {
-    font-size:2em;
-}
-.error {
-    color:red;
-}
-    </style>
-<div class='Center'>
-<p class='p'>
-    Six Degrees of Bacon
 
-</p>
+    <div class="container">
+        {% if request.GET.error %}
+        <div class="Center">
+            <div class="alert alert-danger alert-sm" role="alert">
+                <h2>Sorry seems we couldn't find that person.</h2>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row justify-content-center">
+            
+            <div class="col-auto">
+                <h1 style="font-size: xx-large;" class="Center">
+                    Six Degrees of Bacon
+                </h1>
+            </div>
+        </div>
+        <form action="/routes/search/" method="get" >
+            <div class="form-group row justify-content-center">
+                <div class="col-auto">
+                    <input class="form-control-sm" id="" type="str" name="search" placeholder='Search...' >
+                </div>
+                <div class="col-auto">
+                    <button style="height: 100%;"class="btn-sm btn-light" type="submit">Search</button>
+                    <input type="hidden" value="search">
+                </div>
+            </div>
+        </form>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <p>
+                    What is this crazy thing?<a href='/explain/'>Find out here.</a>
+                </p>
+            </div>
+        </div>
+    </div>
 
-{% if error  %}
 
-    <form action="" method="get" >
-        <input id="" type="str" name="search" placeholder='Search...' >
-        <input type="submit" value="search">
-    </form>
-    <p class = 'error'>Sorry seems we couldn't find that person.</p>
-{% else %}
-    <form action="routes/search/" method="get" >
-    <input id="" type="str" name="search" placeholder='Search...' >
-    <input type="submit" value="search">
-    </form>
-{% endif %}
-<p>What is this crazy thing?<a href='/explain/'>Find out here.</a></p>
-</div>
+
+
+
+
 {% endblock %}

@@ -30,6 +30,12 @@ class ProfileDetailVeiw(OwnerDetailView):
         ctx = {'user_profile':user,'profile':profile, 'favs':fav_people_list}
         return render(request, self.template_name, ctx)
 
+def homeView(self):
+   
+    return render(self, 'home/home.html')
+
+def accountManageView(self):
+    return render(self, 'home/manage.html')
 
 def top_ten(self):
     q1 = Person.objects.annotate(fav_count=Count('favorites'))
@@ -60,7 +66,7 @@ def statistics(self):
             x.img_path = info[1]
             x.save()
         ten_list.append((x.real_name, x.img_path, x.id, item['c']))
-    q = Person.objects.values('bacon_number').annotate(c=Count('bacon_number'))
+    q = Person.objects.values('bacon_number').annotate(c=Count('bacon_number')).order_by('bacon_number')
     ctx = {'total':total, 'ten_list':ten_list, 'bacon_numbers':q}
     return render(self, 'home/statistics.html', ctx)
 

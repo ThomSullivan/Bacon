@@ -16,6 +16,7 @@ django-rest-authtoken = "*"
 djangorestframework-xml = "*"
 mysqlclient = "*"
 mysql-connector-python = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 

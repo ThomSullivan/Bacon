@@ -2,13 +2,45 @@
 {% load static %}
 {% block content %}
 
-<h1>There are currently {{ total }} routes available for search</h1>
-<h2>The largest links to Kevin bacon are.</h2>
-{% for item in ten_list%}
-<p><a href='/routes/result/{{item.2}}'>{{ item.0 }}</a> links {{ item.3}} people from the previous degree.</p>
-{% endfor %}
-<h2>Bacon number breakdown</h2>
-{% for degree in bacon_numbers %}
-<p class='p'>There are {{ degree.c }} people with a Bacon number of {{ degree.bacon_number }}</p>
-{% endfor %}
+
+    <div class="container"> 
+        <div class="row justify-content-center">
+            <h1>
+                Statistics
+            </h1>
+        </div>
+        <div class="row justify-content-center">
+            <h2>
+                {{ total }} people are available for search.
+            </h2>
+        </div>
+        <div class="row justify-content-center">
+            <h1>
+                The largest links to Kevin bacon are.
+            </h1>
+        </div>
+        <div class="row row-md-6 row-12 justify-content-center">
+            <div class="col-auto">
+                {% for item in ten_list%}
+                    <h3>
+                        <a href='/routes/result/{{item.2}}'>{{ item.0 }}</a> 
+                        links {{ item.3}} people from the previous degree.
+                    </h3>
+                {% endfor %}
+            </div>
+            <div class="col-auto">
+                <h1>
+                    Bacon number breakdown
+                </h1>
+                {% for degree in bacon_numbers %}
+                    <h3>There are {{ degree.c }} people with a Bacon number of {{ degree.bacon_number }}</h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 {% endblock %}
