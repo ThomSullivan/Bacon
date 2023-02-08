@@ -8,17 +8,16 @@
         <div class="col-12">
             <hr class="hr hr-blurry" />
         </div>
-        {% if user.password %}
+        
         <div class="row justify-content-center">
-            <a href="/accounts/password/change/">Change Password</a>
+            <a href="/accounts/password/change/">Password Management</a>
         </div>
-        {% else %}
-        <div class="row justify-content-center">
-            <a href="'/accounts/password/set/">Set Password</a>
-        </div>
-        {% endif %}
+        
         <div class="row justify-content-center">
             <a href="/accounts/email/">Email Managment</a>
+        </div>
+        <div class="row justify-content-center">
+            <a href="/user/getToken">Get API key</a>
         </div>
         
     </div>

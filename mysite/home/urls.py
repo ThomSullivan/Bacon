@@ -13,4 +13,5 @@ urlpatterns = [
     path('explain/', TemplateView.as_view(template_name='home/explain.html'), name='explain'),
     path('champions/', champions, name='champions'),
     path('user/manage/', accountManageView, name='manage'),
+    path('user/getToken', TemplateView.as_view(template_name='home/getToken.html'), name='getToken'),
 ]

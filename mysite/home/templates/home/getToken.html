@@ -1,0 +1,115 @@
+{% extends "bootstrap.html" %}
+{% block content %}
+
+
+<div class="container-fluid hide" id="alertId">
+    <div class="Center">
+      <div class="alert alert-danger p-0" role="alert">
+          <div class="Center">
+            Username and/or Password incorrect
+          </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="container">
+    <div class="Center">  
+        <div class="row justify-content-center">
+            <h1>Welcome to API key access</h1>
+        </div>
+        <div class="col-12">
+            <hr class="hr hr-blurry" />
+        </div>
+        <div class="row justify-content-center">
+            <h3>Enter your username and password to reveal your API token.</h3>
+        </div>
+        <form  method="POST" action="/api/auth/token/login/" id="formdata" role="form">
+        {% csrf_token %}
+        <div class="form-group row justify-content-center">
+            <div class="col-md-auto col-12">
+                <label class="col-auto col-form-label" for="username">Username</label>
+            </div>
+            <div class="col-md-auto col-12">
+                <input type="text" class="form-control form-control-light" id="username" name="username"  placeholder="Username" autocomplete="username" maxlength="150" required="">
+            </div>
+        </div>
+        <div class="form-group row justify-content-center">
+            <div class="col-md-auto col-12">
+                <label class="col-auto col-form-label" for="password">Password</label>
+            </div>
+            <div class="col-md-auto col-12">
+                <input type="password" class="form-control form-control-light" id="password" name="password"  placeholder="Password" autocomplete="current-password" maxlength="150" required="">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+              <button style="height: 100%;"class="btn btn-light" type="submit">Get API key</button>
+            </div>
+          </div>
+        </form>
+        <div class="col-12">
+            <hr class="hr hr-blurry" />
+        </div>
+        <div class="row justify-content-center ">
+            <div id="output-message-header"> </div>
+        </div>
+        <div class="row justify-content-center ">
+            <div id="output-message"> </div>
+        </div>
+        <div class="row justify-content-center ">
+            <div id="output-message-footer"> </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    document.getElementById("formdata").addEventListener("submit", function(e){
+        e.preventDefault();
+        
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        const formData = new FormData();
+    
+    
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+    
+        fetch('/api/auth/token/login/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+                document.getElementById("username").value = ""
+                document.getElementById("password").value = ""
+                if (data['auth_token'] === undefined){
+                    document.getElementById('alertId').classList.remove('hide')
+                }else {
+                    document.getElementById('alertId').classList.add('hide');
+                    document.getElementById("output-message-header").innerText = 'Your API key is:'
+                    document.getElementById("output-message").innerText = `${data['auth_token']}`
+                    document.getElementById("output-message-footer").innerText = 'Keep it safe!'
+                }
+        })
+        .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("output-message").innerText = "Sorry! There was an error submitting your enquiry. "
+                setTimeout(function(){ 
+                    document.getElementById("output-message").style.display = "none";
+                }, 3000);
+                setTimeout(function(){ 
+                    document.getElementById("output-message").style.display = "";
+                }, 1000);
+        });
+    });
+</script>
+{% endblock %}

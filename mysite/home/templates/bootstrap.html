@@ -5,14 +5,14 @@
 <html>
 <head>
 
-  <!-- Google tag (gtag.js) 
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-N23DMH423F');
-  </script>-->
+  </script>
   
    <!-- Required meta tags -->
    <meta charset="utf-8">
@@ -114,7 +114,7 @@
         <div class="alert alert-warning p-0" role="alert">
             <div class="Center">
               {% for message in messages %}
-              <p >{{message}}</p>
+              {{message}}
               {% endfor %}
           </div>
         </div>
@@ -132,9 +132,7 @@
       <div class="alert alert-danger p-0" role="alert">
           <div class="Center">
             {% for error in errors %}
-            <p>
-              {{error}}
-            </p>
+            {{error}}
             {% endfor %}
           </div>
         </div>

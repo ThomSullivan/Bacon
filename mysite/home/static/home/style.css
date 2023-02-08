@@ -4,7 +4,9 @@ body {
   background-color:#1f2933;
   color:#f5f7fa;
 }
-
+.hide{
+  display:none
+}
 hr {
   background-color: #a7b4c0;
 }
