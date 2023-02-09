@@ -1,12 +1,38 @@
 {% extends "bootstrap.html" %}
-{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{%block title%} Create Article {%endblock%}
 {% block content %}
-<p>
+<div class="container Center">
   <form action="" method="post">
     {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="Submit">
-    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'forum:all' %}';return false;">
+    <div class="row justify-content-center">
+      
+        <label for="title">Title</label>
+      </div>
+      <div class="form-group row-11">
+        {% render_field form.title class="form-control" %}
+      </div>
+    
+    <div class="row justify-content-center">
+      <label for="text"> Text</label>
+    </div>
+    <div class="form-group row-11">
+        {% render_field form.text class="form-control" %}
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <button class="btn btn-light" type="submit">Submit</button>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-light" type="submit" onclick="window.location.href='{% url 'forum:all' %}';return false;"> Cancel</button>
+      </div>
+    </div>
   </form>
-</p>
+</div>
+  
+    
+    
+    
+    
+
 {% endblock %}

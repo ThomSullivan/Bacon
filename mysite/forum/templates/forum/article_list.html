@@ -1,26 +1,51 @@
 {% extends "bootstrap.html" %}
+{% load humanize %}
+{%block title%} Forum {%endblock%}
 {% block content %}
-<h1>Discussions</h1>
-<p>
-{% if article_list %}
-<ul>
-  {% for article in article_list %}
-    <li>
-        <a href="{% url 'forum:article_detail'  article.id %}">{{ article.title }}</a>
-        {% if article.owner == user %}
-        (<a href="{% url 'forum:article_update' article.id %}">Edit</a> |
-        <a href="{% url 'forum:article_delete' article.id %}">Delete</a>)
-        {% endif %}
-        <sub>{{ article.comments.count }} comments</sub>
-    </li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>There are no articles in the database.</p>
-{% endif %}
-</p>
-<p>
-<a href="{% url 'forum:article_create' %}">Add a discussion</a>
 
-</p>
-{% endblock %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <h1>Discussions</h1>
+  </div>
+  <div class="col-12">
+    <hr class="hr hr-blurry" />
+  </div>
+  {% if article_list %}
+    {% for article in article_list %}
+      <div class="row">
+        <div class="col-10">
+          <h1><a href="{% url 'forum:article_detail'  article.id %}">{{ article.title }}</a></h1>
+        </div>
+        {% if article.owner == user %}
+          <div class="col-2">
+            <a href="{% url 'forum:article_delete' article.id %}"><i class="fa fa-trash"></i></a>
+            <a href="{% url 'forum:article_update' article.id %}"><i class="fa fa-pencil"></i></a>
+          </div>
+          {% endif %}
+        
+      </div>
+      <div class="row">
+          
+        <div class="col-auto">
+          <p>-- {{ article.comments.count }} comments {{ article.updated_at|naturaltime }}</p>
+        </div>
+        
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="row">
+      <h1>There are no articles in the database.</h1>
+    </div>
+  {% endif %}
+  <div class="row justify-content-center">
+    <a href="{% url 'forum:article_create' %}">Add a discussion</a>
+  </div>
+</div>
+
+
+  {% endblock %}
+
+  
+
+
+

@@ -1,60 +1,133 @@
 {% extends "bootstrap.html" %}
 {% load app_tags %}
 {% load humanize %} <!-- https://docs.djangoproject.com/en/3.0/ref/contrib/humanize -->
+{% load widget_tweaks %}
+
+{%block title%} {{article.title}} {%endblock%}
+
 {% block content %}
-<span style="float: right;">
+<div class="container Center">
+    <div class="row justify-content-center">
+        <h1>{{ article.title }}</h1>
+        
+       
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto ">
+            <div class="row">
 
-{% if article.owner == user %}
-<a href="{% url 'forum:article_update' article.id %}"><i class="fa fa-pencil"></i></a>
-<a href="{% url 'forum:article_delete' article.id %}"><i class="fa fa-trash"></i></a>
-{% endif %}
-</span>
-<h1>{{ article.title }}</h1>
-<p><a href='/user/{{ article.owner.id }}'>
-{% if  article.owner.socialaccount_set.all.0.get_avatar_url  %}
-     <img  id='grav' src="{{ article.owner.socialaccount_set.all.0.get_avatar_url }}"/>
-    {% else%}
-     <img  id='grav' src="{{ article.owner|gravatar:60 }}"/>
-     {% endif %}
-</a>
-({{ article.updated_at|naturaltime }}) by {{ article.owner }}
+            
+            <a href='/user/{{ article.owner.id }}'>
+                {% if  article.owner.socialaccount_set.all.0.get_avatar_url  %}
+                     <img id="grav"  src="{{ article.owner.socialaccount_set.all.0.get_avatar_url }}"/>
+                    {% else%}
+                     <img id="grav" src="{{ article.owner|gravatar:60 }}"/>
+                     {% endif %}
+                </a>
+            </div>
+            <div class="row">
+                {{ article.owner }}
+            </div>
+        </div>
+        <div class="col-8 " style="text-align: left;">
+            <div class="row">
+                <div class="col-auto">
+                    <div class="text-muted bp-0"> {{ article.updated_at|naturaltime }} </div>
+                </div>
+                <div class="col">
+                    {% if article.owner == user %}
+                    <a class="float-right" href="{% url 'forum:article_delete' article.id %}"><i class="fa fa-trash"></i></a>
+                    <a class="float-right"href="{% url 'forum:article_update' article.id %}"><i class="fa fa-pencil"></i></a>
+                        
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                   <p> {{ article.text }}</p>
 
+                </div>
+            </div>
+        </div>
+    </div>
 
-</p>
-<p>
-{{ article.text }}
-</p>
-<p>
+    <div class="col-12">
+        <hr class="hr hr-blurry" />
+    </div>
+    
+    {% for comment in comments %}
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div class="row justify-content-center">
+                    <a href='/user/{{ comment.owner.id }}'>
+                        {% if  comment.owner.socialaccount_set.all.0.get_avatar_url  %}
+                            <img  id='grav' src="{{ comment.owner.socialaccount_set.all.0.get_avatar_url }}"/>
+                        {% else%}
+                            <img  id='grav' src="{{ comment.owner|gravatar:60 }}"/>
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="row justify-content-center">
+                    {{ comment.owner }}
+                </div>
+            </div>
+            <div class="col-8 " style="text-align: left;">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="text-muted bp-0"> {{ comment.updated_at|naturaltime }} </div>
+                    </div>
+                    <div class="col">
+                        {% if user == comment.owner %}
+                        <a class="float-right"href="{% url 'forum:article_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p> {{ comment.text }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <hr class="hr hr-blurry" />
+        </div>
+    {% endfor %}
+    
     {% if user.is_authenticated %}
-<br clear="all"/>
-
-{% load crispy_forms_tags %}
-<form method="post" action="{% url 'forum:article_comment_create' article.id %}">
-    {% csrf_token %}
-    {{ comment_form| crispy }}
-<input type="submit" value="Comment">
-
-</form>
-
-{% endif %}
-{% for comment in comments %}
-<a href='/user/{{ comment.owner.id }}'>
-    {% if  comment.owner.socialaccount_set.all.0.get_avatar_url  %}
-         <img  id='grav' src="{{ comment.owner.socialaccount_set.all.0.get_avatar_url }}"/>
-        {% else%}
-         <img  id='grav' src="{{ comment.owner|gravatar:60 }}"/>
-     {% endif %}
-     </a>
-<sub>(by {{ comment.owner }} {{ comment.updated_at|naturaltime }})</sub>
-{% if user == comment.owner %}
-<a href="{% url 'forum:article_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
-{% endif %}
-
-       <p> {{ comment.text }} </p>
-{% endfor %}
+        <form method="post" action="{% url 'forum:article_comment_create' article.id %}">
+            {% csrf_token %}
+            <div class="form-group row justify-content-center">
+                <div class="col-10">
+                    <textarea class="form-control"name="comment"  placeholder="Leave a Comment"></textarea>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <input hidden="true" name="user" value="{{user}}"/>
+                <input hidden="true" name="article" value="{{article}}"/>
+                <button class="btn btn-light" type="submit" >Comment</button>
+            </div>
+        </form>
+    {% endif %}
+    <p></p>
+    <div class="row justify-content-center">
+        <a href="{% url 'forum:all' %}">Forum Home</a>
+    </div>
+    
+</div>
 
 
 
-<a href="{% url 'forum:all' %}">All articles</a>
+
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

@@ -1,13 +1,42 @@
 {% extends "bootstrap.html" %}
+{%block title%} Delete Comment {%endblock%}
 {% block content %}
-<h1>Delete Comment</h1>
 
-<p>Are you sure you want to delete</p>
-<p>{{ comment.text }}?</p>
+<div class="container Center">
+  <div class="row">
+    <div class="col">
+      <h1>Delete Comment</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p>Are you sure you want to delete</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p>{{ comment.text }}?</p>
+    </div>
+  </div>
 
-<form action="" method="POST">
-  {% csrf_token %}
-  <input type="submit"  class="btn btn-primary" value="Yes, delete.">
-  <a href="{% url 'forum:article_detail' comment.article.id %}" class="btn btn-secondary">Cancel</a>
-</form>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <div class="form-group row justify-content-center">
+      <div class="col-auto">
+        <input type="submit"  class="btn btn-light" value="Delete">
+
+      </div>
+      <div class="col-auto">
+        <a href="{% url 'forum:article_detail' comment.article.id %}" class="btn btn-secondary">Cancel</a>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+
 {% endblock %}

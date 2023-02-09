@@ -5,7 +5,7 @@
 <html>
 <head>
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js)--> 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -28,16 +28,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="img/ico "/>
-  {% if title %}
-  <!--first item in ctx['title'] in view to set custom title-->
+  
     <title>
-      {{ title.0 }}
+      {%block title%} Six Degrees of Bacon {%endblock%}
     </title>
-  {% else %}
-    <title>
-      Six Degrees of Bacon
-    </title>
-  {% endif %}
+  
 </head>
 
 <body>
