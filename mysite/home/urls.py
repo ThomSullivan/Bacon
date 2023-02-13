@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import ProfileDetailVeiw, top_ten, statistics, champions, homeView, accountManageView
+from .views import ProfileDetailVeiw, top_ten, statistics, champions, homeView, accountManageView, contactMe
 #from routes.views import ResultListView, result
 
 app_name = 'home'
@@ -14,4 +14,5 @@ urlpatterns = [
     path('champions/', champions, name='champions'),
     path('user/manage/', accountManageView, name='manage'),
     path('user/getToken', TemplateView.as_view(template_name='home/getToken.html'), name='getToken'),
+    path('contact-me/', contactMe, name='contact'),
 ]
