@@ -1,16 +1,23 @@
 import hashlib
 import urllib
-from mysite.settings import TMDB_API_KEY
 import requests
+
+from mysite.settings import TMDB_API_KEY, CONTACT_EMAIL
+from .models import Profile
+from .forms import contactMeForm
+from routes.views import get_person_info
+from routes.models import Person, Step
+
 from django import template
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
-from routes.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
+from routes.owner import OwnerDetailView
 from django.contrib.auth.models import User
-from .models import Profile
-from routes.models import Person, Step
 from django.db.models import Count
-from routes.views import get_person_info, get_movie_info
+from django.core.mail import send_mail
+from django.contrib import messages
+
 register = template.Library()
 
 class ProfileDetailVeiw(OwnerDetailView):
@@ -33,6 +40,28 @@ class ProfileDetailVeiw(OwnerDetailView):
 def homeView(self):
    
     return render(self, 'home/home.html')
+
+
+def contactMe(request):
+    if request.method == 'POST':
+        form = contactMeForm(request.POST)
+        if form.is_valid():
+            subject = 'Someone sent an e-mail from Six Degrees'
+            message = f"name: {form.cleaned_data['name']}\nE-mail Address: {form.cleaned_data['emailAddress']}\nMessage:\n{form.cleaned_data['message']}"
+            send_mail(
+                subject,
+                message,
+                None,
+                [CONTACT_EMAIL]
+            )
+            messages.add_message(request, messages.SUCCESS, 'Your Message has been sent!')
+            return HttpResponseRedirect('/')
+    else:
+        form = contactMeForm()
+        
+
+    return render(request, 'home/contactMe.html', {'form':form})
+
 
 def accountManageView(self):
     return render(self, 'home/manage.html')

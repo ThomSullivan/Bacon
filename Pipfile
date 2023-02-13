@@ -17,6 +17,7 @@ djangorestframework-xml = "*"
 mysqlclient = "*"
 mysql-connector-python = "*"
 django-widget-tweaks = "*"
+django-recaptcha = "*"
 
 [dev-packages]
 

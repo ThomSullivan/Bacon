@@ -30,12 +30,13 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+SITE_ID = 3
 APP_NAME = 'Six Degrees of Bacon'
 ALLOWED_HOSTS = ['*']
 
 
 TMDB_API_KEY = env('TMDB_API_KEY')
-
+CONTACT_EMAIL = env('CONTACT_EMAIL')
 # Application definition
 
 INSTALLED_APPS = [
@@ -60,7 +61,8 @@ INSTALLED_APPS = [
     'api',
     'djoser',
     'rest_framework.authtoken',
-    'widget_tweaks'
+    'widget_tweaks',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,37 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
 
+# Internationalization
+# https://docs.djangoproject.com/en/3.2/topics/i18n/
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = 'home/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'home/static/'),]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#API SETTINGS
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -169,52 +201,23 @@ DJOSER = {
     'USER_ID_FIELD' : 'id'
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = 'home/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'home/static/'),]
-
 #Email settings
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_USE_TLS = True
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 #Allauth settings
+
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
-]
-SITE_ID = 3
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -227,3 +230,15 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+#CAPTCHA settings
+
+if DEBUG:
+    #Allows for local testing with default public and private keys
+    SILENCED_SYSTEM_CHECKS =[
+        'captcha.recaptcha_test_key_error'
+    ]
+if not DEBUG:
+    RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'

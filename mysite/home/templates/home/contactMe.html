@@ -1,0 +1,63 @@
+{% extends 'bootstrap.html' %}
+{% load widget_tweaks %}
+
+{%block title%} Contact Me {%endblock%}
+
+{% block content %}
+<div class="container-fluid Center">
+    <div class="row justify-content-center">
+        <h1>Contact Me</h1>
+    </div>
+    <div class="col-12">
+        <hr class="hr hr-blurry" />
+    </div>
+    <form method="post" action="">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col">
+                Name
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-10">
+                {% render_field form.name class="form-control" %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                E-mail
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-10">
+                {% render_field form.emailAddress class="form-control" %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                Message
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-10">
+                {% render_field form.message class="form-control" %}
+            </div>
+        </div>
+        <div class="row mt-1 justify-content-center">
+            <div class="col-auto">
+                
+                {% render_field form.captcha class="form-control"  %}
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col">
+                <button type="submit" class="btn btn-light">Send Message</button>
+            </div>
+        </div>
+    </form>
+    
+</div>
+
+
+
+{% endblock %}
