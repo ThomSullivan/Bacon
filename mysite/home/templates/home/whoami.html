@@ -1,0 +1,133 @@
+{% extends 'bootstrap.html' %}
+{% load static %}
+
+{%block title%} Made by Thomas {%endblock%}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-auto px-1 my-0">
+            <h1 >Hello there, I am Thomas!</h1>
+        </div>
+        <div class="col-auto px-1 my-0">
+           <a href="https://github.com/ThomSullivan" target="_blank" rel="noopener noreferrer"> 
+            <img class="contact-img"  src='{% static "img/github-icon.png" %}' alt="Link to my Github Profile">
+            </a> 
+
+        </div>
+        <div class="col-auto px-1 my-0">
+            <a href="https://www.linkedin.com/in/sullivanthom/" target="_blank" rel="noopener noreferrer">
+            <img class="contact-img" src='{% static "img/linkedin-icon.png" %}' alt="Link to my LinkedIn profile"> 
+            </a>
+        </div>
+        <div class="col-auto px-1 my-0">
+            <a href="{% url 'home:contact' %}">
+            <img class="contact-img" src='{% static "img/email-icon.png" %}' alt="Contact Me"> 
+        </a>
+        </div>
+    </div>
+    <div class="col-12">
+        <hr class="hr hr-blurry" />
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-12 mb-2" style="text-align: left;">
+            Once upon a time in 2021, after spending about a year learning and getting comfortable using Python, I was looking for a challenge that I could really sink my teeth into and  that would stretch my abilities. I decided  it would be a neat idea to create a program that would play the game Six Degrees of Separation based around Kevin Bacon. I set about on my quest and gathered as much data as the kind folks at TMDB would let. With a database filled with millions of people, movies, and cast lists I began sifting through the data. In brute force fashion I crafted some python to meticulously find every persons' smallest degree of separation. When complete, over one million people were linked to Kevin Bacon within six degrees. After a few refinements and database designs later and I had a working command line program.  
+        </div>
+        <div class="col-lg-4 col-12">
+            <div class="row justify-content-center">
+            <img class='img-fluid' src='{% static "img/kevinBaconOrigins.png" %}' alt="The command line tool that started it all"> 
+            </div>
+            <div class="row justify-content-center">
+                <a href="" target="_blank" rel="noopener noreferrer">GitHub</a>&nbsp;link to Six Degrees of Bacon v1.0 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            
+        </div>
+    </div>
+    <div class="row">
+        
+    </div>
+    <div class="row ">
+        <div class="col" style="text-align: left;">
+            But this was not enough and I felt the need to share what I had built (even though the people over at <a href="https://oracleofbacon.org/" target="_blank" rel="noopener noreferrer">The Oracle of Bacon</a> did it in 1999!). So I created this site, and the interactivity level  of my creation grew far beyond the command line on my computer. This site has also grown in purpose. It now serves as an area to display the skills I have to develop functional, interactive, and available information systems in a scalable way.
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            I built this site, from scratch, using: 
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/mysql.svg" %}' alt="MySQL"> </a>
+        </div>
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://www.python.org/" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/python.svg" %}' alt="Python"></a>
+        </div>
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://www.djangoproject.com/" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/django-icon.svg" %}' alt="django"></a>
+        </div>
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://devdocs.io/html/" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/html-5.svg" %}' alt="html-5"></a>
+        </div>
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://www.w3.org/Style/CSS/Overview.en.html" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/css-3.svg" %}' alt="css-3"></a>
+        </div>
+        <div class="col-sm-2 col-4 my-1">
+            <a href="https://www.javascript.com/" target="_blank" rel="noopener noreferrer"><img class='img-fluid' src='{% static "img/javascript.svg" %}' alt="javascript"></a>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            The awesome people at <a href="https://www.pythonanywhere.com/?affiliate_id=00abe657" target="_blank" rel="noopener noreferrer">Python Anywhere</a> are doing the hard work of hosting this site.
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            The source code for this site can be viewed <a href="https://github.com/ThomSullivan/Bacon" target="_blank" rel="noopener noreferrer">HERE</a> on GitHub
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: left;">
+            The site also contains many features other than just being able to search for celebrities and their degree of separation from Mr. Bacon. A fully featured accounts system is in place to allow for user interaction with the site. 
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-auto">
+            User features include: 
+        </div>
+    </div>
+    <ul style="text-align: left;">
+        <li>Account creation can be handled through Google Single Sign on for user convenience</li>
+        <li>Tracking of the largest degree of separation found by the user, and any “favorited” celebrities</li>
+        <li>A profile to display this information about the user</li>
+        <li>Access to a forum where all things Kevin Bacon can be discussed</li>
+        <li>General account management features like password reset, email confirmation and account deletion</li>
+    </ul>
+    <div class="row ">
+        <div class="col-auto">
+            Game features (this will be updated as more features are added):
+        </div>
+    </div>
+    <ul style="text-align: left;">
+        <li>A leaderboard of registered users that have found the largest degree of separation on the site</li>
+        <li>(coming soon) tracking of user search count, and first finds</li>
+    </ul>
+    <div class="row my-1">
+        <div class="col" style="text-align: left;">
+            Users also can obtain an API key as all of the site's features are also available via a REST API built with Django Rest Framework. Documentation for the API is available <a href="{%url 'APIhome'%}">HERE</a>. If you would like to develop on top of the API please feel  free.
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="col" style="text-align: left;">
+            If you are looking for some one with these kinds of skills or know someone that is, feel free to <a href="{% url 'home:contact' %}">Contact Me</a>.
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

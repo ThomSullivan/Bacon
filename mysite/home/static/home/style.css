@@ -1,7 +1,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom:50px;
-  background-color:#1f2933;
+  background-color:#374858;
   color:#f5f7fa;
 }
 .hide{
@@ -47,10 +47,14 @@ A:visited {
   max-width: 500px;
 }
 
+.contact-img{
+  width: auto;
+  height: 1.5em;
+}
 #grav_profile {
   width: auto;
   height: 100px;
-padding: 2px 5px 0px 0px;
+  padding: 2px 5px 0px 0px;
   border-radius:8px;
 }
 
@@ -72,16 +76,8 @@ padding: 2px 5px 0px 0px;
 }
 
 .footer {
-  display:table;
   position:fixed;
   bottom: 0;
   width: 100%;
-  background-color: #3e4c59;
-  color: white;
-  text-align: center;
-  padding:10px;
-  left:0;
+  background-color:#2c363f;
 } 
-.footer_image {
-    height:1em;
-}
