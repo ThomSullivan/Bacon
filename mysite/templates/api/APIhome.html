@@ -1,0 +1,81 @@
+{% extends 'bootstrap.html' %}
+{% load static %}
+{%block title%} API Home {%endblock%}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Welcome the to API Documentation</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            The REST API available on this page is available to anyone to use. To get started you will need To:
+        </div>
+    </div>
+    
+            <ul>
+               <li> Register an account WITH a password (note: if you created your account using Google, you will need to <a href="{% url 'account_set_password' %}">set a password here</a></li>
+               <li> Obtain your API key <a href="{% url 'home:getToken'%}">here</a></li>
+            </ul>
+        
+    <div class="row justify-content-center">
+        <div class="col-auto">
+             <a class="btn btn-dark stretched-link" href="{% url 'APIdocs' %}">Go to endpoint functionality documentation</a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <small>
+                *You must be logged in to access documentation
+            </small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            You can then make requests using your token then by including it in your request headers like:
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <kbd>
+                curl --request GET \ 
+            </kbd>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <kbd>
+                &nbsp&nbsp&nbsp&nbsp--url https://www.sixdegreesofbacon.org/api/users/profile \ 
+            </kbd>
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col">
+            <kbd>
+                &nbsp&nbsp&nbsp&nbsp--header 'Authorization: Token {YOUR TOKEN}' 
+            </kbd> 
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col">
+            Request rates are limited to 100 requests per minute from registered users
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            The API does accept requests from anonymous users but only at limited capacity  
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li>No user functionality, and cannot view any profiles.</li>
+                <li>Throttled to 5 requests per minute.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
