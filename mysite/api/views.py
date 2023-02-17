@@ -1,21 +1,19 @@
 from routes.models import Person, Movie, Step, Fav
 from forum.models import Article, Comment
 from home.models import Profile
-from .serializers import UserProfileSerializer,  ArticleListSerializer, ArticleDetailSerializer, ArticlePostSerializer, CommentAddSerializer,CommentDeleteSerializer, ChampionViewSerializer, TopTenSerializer
-from .permissions import IsCommentOwner
+from .serializers import UserProfileSerializer,  ArticleListSerializer, ArticleDetailSerializer, ArticlePostSerializer, CommentAddSerializer,CommentDeleteSerializer, ChampionViewSerializer, TopTenSerializer, ArticlePutSerializer
+from .permissions import IsCommentOwner, IsArticleOwner
 from routes.views import get_person_info, get_movie_info
 from mysite.settings import TMDB_API_KEY
 
 import requests
 
-from django.shortcuts import  get_object_or_404, redirect
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, JsonResponse, HttpResponseRedirect, response
-from django.urls import reverse, resolve
+from django.shortcuts import  get_object_or_404
+
+from django.http import  HttpResponseBadRequest, HttpResponseNotFound, JsonResponse
 from django.db.models import Count
 
-from rest_framework import generics, response, viewsets
-from rest_framework.views import APIView
+from rest_framework import generics, viewsets
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
@@ -73,15 +71,47 @@ class ArticleDetailView(generics.ListCreateAPIView):
 
     def get_permissions(self):
         permission_classes = [IsAuthenticated]
-        if self.request.method == 'DELETE':
-            permission_classes = [IsAuthenticated, IsCommentOwner | IsAdminUser ] 
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated | IsAdminUser] 
+        if self.request.method == 'PUT' or self.request.method == 'DELETE':
+            permission_classes = [IsAuthenticated, IsArticleOwner | IsAdminUser]
         return[permission() for permission in permission_classes]
 
     def get_queryset(self):
         query = Article.objects.filter(pk=self.kwargs['pk']).order_by('id')
         return query
     
-    def post(self, request, *args, **kwargs):
+    def put(self, request, pk):
+        serialized_item = ArticlePutSerializer(data=request.data)
+        serialized_item.is_valid(raise_exception=True)
+        article = get_object_or_404(Article, pk=pk)
+        print(serialized_item.default_validators)
+        if request.user == article.owner:
+            if serialized_item.is_valid():
+                article.title, article.text = request.data['title'], request.data['text']
+                article.save()
+                return JsonResponse(status=201, data={'message':'Article updated'})           
+        return JsonResponse(status=403, data={'message':'You cannot modify this article'})
+    
+    def delete(self, request, pk):
+        article = Article.objects.get(pk=pk)
+        if self.request.user == article.owner:
+            article.delete()
+            return JsonResponse(status=200, data={'message':'The Article was deleted'})
+        return JsonResponse(status=403, data={'message':'You cannot delete this article'})
+  
+class ArticleCommentView(viewsets.ViewSet):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    serializer_class = ArticleDetailSerializer
+    queryset = Comment.objects.filter(pk=1)
+
+    def get_permissions(self):
+        permission_classes = [IsAuthenticated]
+        if self.request.method == 'DELETE':
+            permission_classes = [IsAuthenticated, IsCommentOwner | IsAdminUser ] 
+        return[permission() for permission in permission_classes]
+
+    def create(self, request, *args, **kwargs):
         serialized_item = CommentAddSerializer(data=request.data)
         serialized_item.is_valid(raise_exception=True)
         pk = self.kwargs['pk']
@@ -90,26 +120,34 @@ class ArticleDetailView(generics.ListCreateAPIView):
         Comment.objects.create(article=article, owner=request.user, text=text)
         return JsonResponse(status=201, data={'message':'The comment was posted'}) 
     
-    def delete(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         serialized_item = CommentDeleteSerializer(data=request.data)
         serialized_item.is_valid(raise_exception=True)
         comment = get_object_or_404(Comment, pk=self.request.data['id'])
         comment.delete()
-        return JsonResponse(status=204, data={'message':'The comment was deleted'})
+        return JsonResponse(status=200, data={'message':'The comment was deleted'})
+    
+
+
+
 
 class ChampionsView(generics.ListAPIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     serializer_class = ChampionViewSerializer
+    permission_classes = []
     queryset = Profile.objects.all().order_by('-longest')[:10]
 
 class TopTenView(generics.ListAPIView):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     serializer_class = TopTenSerializer
+    permission_classes = []
+    pagination_classes = [None]
     queryset = Person.objects.annotate(fav_count=Count('favorites')).order_by('-fav_count')[:10]
 
 class StatisticsView(viewsets.ViewSet):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     queryset = Step.objects.filter(pk=1)
+    permission_classes = []
     def list(self, request):
         total = Person.objects.count()
         q = Step.objects.values('next_step').annotate(c=Count('next_step')).order_by('-c').exclude(next_step=2469)[:10]
@@ -126,52 +164,21 @@ class StatisticsView(viewsets.ViewSet):
         ctx = {'total':total, 'ten_list':ten_list, 'bacon_numbers':[x for x in q]}
         return JsonResponse(ctx)
 
+
 class ResultDetailView(viewsets.ViewSet):
     throttle_classes = [AnonRateThrottle, UserRateThrottle]
     queryset = Step.objects.filter(pk=1)
+    permission_classes = []
 
-    def get_permissions(self):
-        permission_classes = []
-        if self.request.method != 'GET':
-            permission_classes = [IsAuthenticated] 
-        return[permission() for permission in permission_classes]
-
-    
-
-    def list(self, request):
-        pk = search_pk(request.data['name'])
-        ctx = {'degrees':[], 'pk' : pk, 'title':[]}
+    def search(self, request, search):
+        try:
+            pk = search_pk(search)
+        except:
+            return HttpResponseNotFound()
+        ctx = { 'pk' : pk, 'favorite':None, 'record':False, 'degrees':[]}
         bacon = False
         person_id = pk
-        while bacon == False:
-            try:
-                x = Person.objects.get(pk=person_id)
-            except:
-                return HttpResponseNotFound()
-            # x is not a person object
-            #checking for a local stored name and getting one if not
-            if x.real_name == '':
-                q = x.name
-                info = get_person_info(q)
-                x.real_name = info[0]
-                x.img_path = info[1]
-                x.save()
-            # get a step object as y using x object as a parameter
-            person = (x.id, x.name, x.real_name, x.img_path,x.bacon_number)
-            ctx['title'].append(x.real_name)
-            y = Step.objects.get(person=x)
-            if y.movie.real_title == '':
-                q = y.movie.title
-                info = get_movie_info(q)
-                y.movie.real_title = info[0]
-                y.movie.img_path = info[1]
-                y.movie.save()
-            movie = (y.movie.title, y.movie.real_title, y.movie.img_path)
-            ctx['degrees'].append((person, movie))
-            if y.next_step.name == 4724:
-                bacon = True
-            else:
-                person_id = y.next_step.id
+
         #check to see for favorite status
         favorites = list()
         if request.user.is_authenticated:
@@ -188,14 +195,51 @@ class ResultDetailView(viewsets.ViewSet):
                 profile.longest = current.bacon_number
                 profile.save()
                 ctx['record']=True
+
+        while bacon == False:
+            try:
+                x = Person.objects.get(pk=person_id)
+            except:
+                return HttpResponseNotFound()
+            # x is not a person object
+            #checking for a local stored name and getting one if not
+            if x.real_name == '':
+                q = x.name
+                info = get_person_info(q)
+                x.real_name = info[0]
+                x.img_path = info[1]
+                x.save()
+            # get a step object as y using x object as a parameter
+            person = (x.id, x.name, x.real_name, x.img_path,x.bacon_number)
+            
+            y = Step.objects.get(person=x)
+            if y.movie.real_title == '':
+                q = y.movie.title
+                info = get_movie_info(q)
+                y.movie.real_title = info[0]
+                y.movie.img_path = info[1]
+                y.movie.save()
+            movie = (y.movie.title, y.movie.real_title, y.movie.img_path)
+            ctx['degrees'].append((person, movie))
+            if y.next_step.name == 4724:
+                bacon = True
+            else:
+                person_id = y.next_step.id
+        
         return JsonResponse(ctx)
-    
-    def patch(self, request):
-        pk = search_pk(request.data['name'])
+
+class PersonLikeView(viewsets.ViewSet):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+    queryset = Person.objects.filter(pk=1)
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, pk):
+        print(self.kwargs)
+        pk = self.kwargs['pk']
         person = get_object_or_404(Person, pk=pk)
         try:
             fav = Fav.objects.get(user=request.user, person=person).delete()
         except:
             Fav.objects.create(user=request.user, person=person)
-            return HttpResponse(status=201)
-        return HttpResponse(status=201)
+            return JsonResponse(status=201, data={'message':f'{person.real_name} liked.'})
+        return JsonResponse(status=201, data={'message':f'{person.real_name} unliked.'})

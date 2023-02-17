@@ -39,6 +39,11 @@ class ArticlePostSerializer(serializers.ModelSerializer):
             'title': {'min_length': 5},
         }
 
+class ArticlePutSerializer(serializers.ModelSerializer):  
+    class Meta():
+        model = Article
+        fields = ['title','text']
+
 class ArticleListSerializer(serializers.ModelSerializer):
     owner = OwnerSerializer()
     class Meta():
@@ -92,5 +97,3 @@ class TopTenSerializer(serializers.ModelSerializer):
         model = Person
         fields = ['real_name','favorites']
 
- 
-   
