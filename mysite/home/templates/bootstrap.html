@@ -36,7 +36,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3e4c59">
+  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2c363f">
     <a class="navbar-brand" href="/">
       <img src="/home/static/favicon.ico" width="30" height="30">
     </a>
@@ -150,7 +150,29 @@
  
 
   <div class="footer">
-    <p style="text-align: center;vertical-align: middle;display: table-cell;">This website made with love by me, <a class='a' href='/explain'>Thomas!</a></p>
+    <div class="containter-fluid">
+      <div class="row justify-content-center my-2">
+      <div class="col-auto">
+      This site made with love by <a class='a' href="{% url 'home:whoami'%}">Thomas!</a>
+    </div>
+      <div class="col-auto px-0 my-0 ">
+        <a href="https://github.com/ThomSullivan" target="_blank" rel="noopener noreferrer"> 
+         <img class="contact-img"  src='{% static "img/github-icon.png" %}' alt="Link to my Github Profile">
+         </a> 
+
+     </div>
+     <div class="col-auto px-1 my-0">
+         <a href="https://www.linkedin.com/in/sullivanthom/" target="_blank" rel="noopener noreferrer">
+         <img class="contact-img" src='{% static "img/linkedin-icon.png" %}' alt="Link to my LinkedIn profile"> 
+         </a>
+     </div>
+     <div class="col-auto px-1 my-0">
+         <a href="{% url 'home:contact' %}">
+         <img class="contact-img" src='{% static "img/email-icon.png" %}' alt="Contact Me"> 
+     </a>
+     </div>
+    </div>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

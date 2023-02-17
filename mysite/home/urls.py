@@ -15,4 +15,6 @@ urlpatterns = [
     path('user/manage/', accountManageView, name='manage'),
     path('user/getToken', TemplateView.as_view(template_name='home/getToken.html'), name='getToken'),
     path('contact-me/', contactMe, name='contact'),
+    path('whoami/', TemplateView.as_view(template_name='home/whoami.html'), name='whoami'),
+    path('donation/', TemplateView.as_view(template_name='home/donation.html'), name='donation'),
 ]
