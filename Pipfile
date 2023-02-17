@@ -18,6 +18,9 @@ mysqlclient = "*"
 mysql-connector-python = "*"
 django-widget-tweaks = "*"
 django-recaptcha = "*"
+uritemplate = "*"
+pyyaml = "*"
+coreschema = "*"
 
 [dev-packages]
 
