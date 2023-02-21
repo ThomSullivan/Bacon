@@ -26,7 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+## Initialize environmental variables
 SECRET_KEY = env('SECRET_KEY')
+TMDB_API_KEY = env('TMDB_API_KEY')
+CONTACT_EMAIL = env('CONTACT_EMAIL')
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -35,8 +41,7 @@ APP_NAME = 'Six Degrees of Bacon'
 ALLOWED_HOSTS = ['*']
 
 
-TMDB_API_KEY = env('TMDB_API_KEY')
-CONTACT_EMAIL = env('CONTACT_EMAIL')
+
 # Application definition
 
 INSTALLED_APPS = [

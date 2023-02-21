@@ -21,6 +21,7 @@ django-recaptcha = "*"
 uritemplate = "*"
 pyyaml = "*"
 coreschema = "*"
+stripe = "*"
 
 [dev-packages]
 
