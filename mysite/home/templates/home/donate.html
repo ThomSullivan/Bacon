@@ -1,0 +1,79 @@
+{% extends 'bootstrap.html' %}
+{% load static %}
+
+{% block head %}    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'checkout.css' %}" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'checkout.js' %}" defer></script>
+{% endblock %}
+
+{% block title%}Donate {% endblock %}
+
+{% block content %}
+<div class="container-fluid Center">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <h1>Make A Donation</h1>
+        </div>
+    </div>
+    <div class="col-12">
+        <hr class="hr hr-blurry" />
+    </div>
+    <div class="row-12">
+        <div class="col-auto">
+            I have heard that begging is good for the soul and that rejection builds character. I really just wanted to add more functionality to this site, but if you insist...
+        </div>
+    </div>
+    <div class="col-12">
+        <hr class="hr hr-blurry" />
+    </div>
+</div>
+
+<div id="selection-container" class="container Center">
+    <div class="row justify-content-center">
+        <div class="col-auto my-2">
+            <button  id="donate-coffee" class="btn btn-light">Donate some coffee $5</button>
+        </div>
+        <div class="col-auto my-2">
+            <button  id="donate-server-fees" class="btn btn-light">Pay some server fees $5</button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid Center">
+    <div class="row-12 justify-content-center mb-2">
+        <div class="col-auto">
+            <div id="description"></div>
+        </div>
+    </div>
+</div>
+<div id="payment-container" class="container-fluid hidden payment-form" style="background-color: #ebebeb;">
+    
+    <div  class="row-12">
+        <div class="col">
+             <!-- Display a payment form -->
+    <form id="payment-form" >
+        <label style="color: black;"for="email">E-mail</label>
+        <input type="text" id="email" placeholder="Enter email address" />
+        <div id="payment-element">
+          <!--Stripe.js injects the Payment Element-->
+        </div>
+        <button id="submit" class="payment-button">
+          <div class="spinner hidden" id="spinner"></div>
+          <span id="button-text">Pay now</span>
+        </button>
+        <div id="payment-message" class="hidden"></div>
+      </form>
+        </div>   
+    </div>
+    <div class="row justify-content-center mt-2">
+        <div class="col-auto">
+            <a style="color: black;" href="{% url 'home:donate' %}">Cancel</a>
+    </div>
+    </div>
+</div>
+
+
+   
+    
+{% endblock %}

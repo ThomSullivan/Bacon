@@ -1,8 +1,11 @@
 import hashlib
 import urllib
 import requests
+import json
 
-from mysite.settings import TMDB_API_KEY, CONTACT_EMAIL
+import stripe
+
+from mysite.settings import TMDB_API_KEY, CONTACT_EMAIL, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
 from .models import Profile
 from .forms import contactMeForm
 from routes.views import get_person_info
@@ -10,13 +13,15 @@ from routes.models import Person, Step
 
 from django import template
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.utils.safestring import mark_safe
+from django.utils.decorators import method_decorator
 from routes.owner import OwnerDetailView
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 register = template.Library()
 
@@ -58,10 +63,7 @@ def contactMe(request):
             return HttpResponseRedirect('/')
     else:
         form = contactMeForm()
-        
-
     return render(request, 'home/contactMe.html', {'form':form})
-
 
 def accountManageView(self):
     return render(self, 'home/manage.html')
@@ -106,6 +108,90 @@ def champions(self):
     for item in q:
         ctx['champ_list'].append((item.user, item.longest))
     return render(self, 'home/champions.html', ctx)
+
+####Stripe functionality and settings###
+stripe.api_key = STRIPE_SECRET_KEY
+
+def donate(request):
+    return render(request, 'home/donate.html')
+
+@method_decorator(csrf_exempt)
+def create_payment(request):
+    if request.method == 'POST':
+        metadata = {}
+        if request.user.is_authenticated:
+            metadata['user'] = request.user
+            
+        data = json.loads(request.body.decode('utf8'))
+        metadata['item'] = data['item']
+        # Create a PaymentIntent with the order amount and currency
+        intent = stripe.PaymentIntent.create(
+            amount=500,
+            currency='usd',
+            automatic_payment_methods={
+                'enabled': True,  
+            },
+            description = f"{metadata['item']} donation",
+            metadata = metadata
+        )
+        
+        return JsonResponse({
+            'clientSecret': intent['client_secret']
+        })
+    
+@method_decorator(csrf_exempt)
+def stripe_webhook(request):
+    event = None
+    payload = request.body.decode('utf8')
+    
+    try:
+        event = json.loads(payload)
+        print (json.dumps(event, indent=3))
+    except:
+        print('⚠️  Webhook error while parsing basic request.' + str(e))
+        return HttpResponse(status=400)
+    if STRIPE_WEBHOOK_SECRET:
+        # Only verify the event if there is an endpoint secret defined
+        # Otherwise use the basic event deserialized with json
+        sig_header = request.headers.get('stripe-signature')
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, STRIPE_WEBHOOK_SECRET
+            )
+        except stripe.error.SignatureVerificationError as e:
+            print('⚠️  Webhook signature verification failed.' + str(e))
+            return HttpResponse(status=400)
+        # Handle the event
+    if event and event['type'] == 'payment_intent.succeeded':
+        payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
+        print('Payment for {} succeeded'.format(payment_intent['amount']))
+        
+    elif event['type'] =='charge.succeeded':
+        eventObject = event['data']['object']
+        message = 'You most generous donation of $5 will help my servers stay running for another month.'
+        if eventObject['metadata']['item'] == 'Coffee':
+            message = 'I love coffee so very much and appreciate you buying me a cup.'
+        wholeMessage = f"{message}\nYour receipt can found here:\n{eventObject['receipt_url']}\nThank you so much!\n\n\nThomas"
+        send_mail(
+                f'Thank you for donating!!',
+                wholeMessage,
+                None,
+                [eventObject['receipt_email']]
+            )
+        pass
+    else:
+        # Unexpected event type
+        print('Unhandled event type {}'.format(event['type']))
+
+    return HttpResponse(status=200)
+    
+def donate_success(request):
+    
+    if request.GET:
+        messages.add_message(request, messages.SUCCESS, 'Your donation has been recieved')
+    
+    return render(request, 'home/donate_success.html')
+
 
 # return only the URL of the gravatar
 # TEMPLATE USE:  {{ email|gravatar_url:150 }}
