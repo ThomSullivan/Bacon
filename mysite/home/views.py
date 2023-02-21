@@ -176,7 +176,7 @@ def stripe_webhook(request):
                 f'Thank you for donating!!',
                 wholeMessage,
                 None,
-                [CONTACT_EMAIL]
+                [eventObject['receipt_email']]
             )
         pass
     else:
