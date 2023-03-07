@@ -5,7 +5,7 @@
 <html>
 <head>
 
-  <!-- Google tag (gtag.js)--> 
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -20,6 +20,8 @@
 
    <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- FONT AWESOME -->
+  <script src="https://kit.fontawesome.com/aa589f82e3.js" crossorigin="anonymous"></script>
 
 
 
@@ -157,18 +159,19 @@
     </div>
       <div class="col-auto px-0 my-0 ">
         <a href="https://github.com/ThomSullivan" target="_blank" rel="noopener noreferrer"> 
-         <img class="contact-img"  src='{% static "img/github-icon.png" %}' alt="Link to my Github Profile">
+          <i class="fa-brands fa-github"></i>
          </a> 
 
      </div>
      <div class="col-auto px-1 my-0">
          <a href="https://www.linkedin.com/in/sullivanthom/" target="_blank" rel="noopener noreferrer">
-         <img class="contact-img" src='{% static "img/linkedin-icon.png" %}' alt="Link to my LinkedIn profile"> 
+          <i class="fab fa-linkedin" ></i>
+
          </a>
      </div>
      <div class="col-auto px-1 my-0">
          <a href="{% url 'home:contact' %}">
-         <img class="contact-img" src='{% static "img/email-icon.png" %}' alt="Contact Me"> 
+          <i class="fa-solid fa-envelope"></i>
      </a>
      </div>
     </div>
