@@ -1,185 +1,185 @@
- <!DOCTYPE html>
- <html lang="en">
- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
 {% load app_tags %}
 <html>
 <head>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-N23DMH423F');
-  </script>
-  
-   <!-- Required meta tags -->
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <!-- Google tag (gtag.js) -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-N23DMH423F"></script>
+ <script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+   gtag('config', 'G-N23DMH423F');
+ </script>
+ 
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <!-- FONT AWESOME -->
-  <script src="https://kit.fontawesome.com/aa589f82e3.js" crossorigin="anonymous"></script>
+  <!-- Bootstrap CSS -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ <!-- FONT AWESOME -->
+ <script src="https://kit.fontawesome.com/aa589f82e3.js" crossorigin="anonymous"></script>
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
-  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="img/ico "/>
-  
-    <title>
-      {%block title%} Six Degrees of Bacon {%endblock%}
-    </title>
-  {% block head %}{% endblock %}
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+ <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="img/ico "/>
+ 
+   <title>
+     {%block title%} Six Degrees of Bacon {%endblock%}
+   </title>
+ {% block head %}{% endblock %}
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2c363f">
-    <a class="navbar-brand" href="/">
-      <img src="/home/static/favicon.ico" width="30" height="30">
-    </a>
-    {% if request.path != "/" %}
-      <form action="/routes/search/" method="get">
-        <div class="form-row justify-content-center" >
-          <div class="col-auto">
-            <input class="form-control form-control-sm my-2 my-sm-0" type="str" name="search" placeholder="Search">
-          </div>
-          <div class="col-auto">
-            <button class="btn btn-sm btn-dark my-2 my-sm-0" type="submit" value="search">Search</button>
-          </div>
-        </div>
-      </form>  
-    {% endif %} 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/statistics">Statistics <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/champions">Champions <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/topten">Top Ten <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/forum">Forum <span class="sr-only">(current)</span></a>
-        </li>
-        <div class="dropdown-divider"></div>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          {% if user.is_authenticated %}
-            <a class="dropdown-item" href='/user/{{user.id}}'>Profile</a>
-            <a class="dropdown-item" href='/user/manage/'>Manage Account</a>
-            <form method="post" class="dropdown-item" action="/accounts/logout/">
-              <button type="submit" class="logoutButton">Logout</button>
-              {% csrf_token %}
-            </form>
-          {% else %}
-            {% if search == True %}
-            <a class="dropdown-item" href="/accounts/signup/?next={{ request.path }}?search=True">Sign up</a>
-            <a class="dropdown-item" href="/accounts/login/?next={{ request.path }}?search=True">Login</a>
-            {% else %}
-            <a class="dropdown-item" href="/accounts/signup/?next={{ request.path }}">Sign up</a>
-            <a class="dropdown-item" href="/accounts/login/?next={{ request.path }}">Login</a>
-            {% endif %}
-          {% endif %} 
-        </div>
-        </li>
-      </ul>
-    </div>
-    
-    
-  </nav>
-  <p></p>
-  <!-- Messages  -->
-  {% if messages %}
-    <div class="container-fluid">
-      <div class="Center">
-        <div class="alert alert-warning p-0" role="alert">
-            <div class="Center">
-              {% for message in messages %}
-              {{message}}
-              {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-  {% endif %}
-  
-  {% if form.errors %}
-  
-    
-  <!-- Form Errors -->
-  <div class="container-fluid">
-    
-    {% for field, errors in form.errors.items %}
-      <div class="alert alert-danger p-0" role="alert">
-          <div class="Center">
-            {% for error in errors %}
-            {{error}}
-            {% endfor %}
-          </div>
-        </div>
-        {% endfor %}
-    </div>
-    
-    
-  {% endif %} 
+ <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2c363f">
+   <a class="navbar-brand" href="/">
+     <img src="/home/static/favicon.ico" width="30" height="30">
+   </a>
+   {% if request.path != "/" %}
+     <form action="/routes/search/" method="get">
+       <div class="form-row justify-content-center" >
+         <div class="col-auto">
+           <input class="form-control form-control-sm my-2 my-sm-0" type="str" name="search" placeholder="Search">
+         </div>
+         <div class="col-auto">
+           <button class="btn btn-sm btn-dark my-2 my-sm-0" type="submit" value="search">Search</button>
+         </div>
+       </div>
+     </form>  
+   {% endif %} 
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav mr-auto">
+       <li class="nav-item active">
+         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+       </li>
+       <li class="nav-item active">
+         <a class="nav-link" href="{% url 'home:statistics'%}">Statistics <span class="sr-only">(current)</span></a>
+       </li>
+       <li class="nav-item active">
+         <a class="nav-link" href="{% url 'home:champions'%}">Champions <span class="sr-only">(current)</span></a>
+       </li>
+       <li class="nav-item active">
+         <a class="nav-link" href="{% url 'home:topten'%}">Top Ten <span class="sr-only">(current)</span></a>
+       </li>
+       <li class="nav-item active">
+         <a class="nav-link" href="{% url 'forum:all'%}">Forum <span class="sr-only">(current)</span></a>
+       </li>
+       <div class="dropdown-divider"></div>
+       <li class="nav-item dropdown">
+         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Account
+         </a>
+       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+         {% if user.is_authenticated %}
+           <a class="dropdown-item" href='/user/{{user.id}}'>Profile</a>
+           <a class="dropdown-item" href='/user/manage/'>Manage Account</a>
+           <form method="post" class="dropdown-item" action="/accounts/logout/">
+             <button type="submit" class="logoutButton">Logout</button>
+             {% csrf_token %}
+           </form>
+         {% else %}
+           {% if search == True %}
+           <a class="dropdown-item" href="/accounts/signup/?next={{ request.path }}?search=True">Sign up</a>
+           <a class="dropdown-item" href="/accounts/login/?next={{ request.path }}?search=True">Login</a>
+           {% else %}
+           <a class="dropdown-item" href="/accounts/signup/?next={{ request.path }}">Sign up</a>
+           <a class="dropdown-item" href="/accounts/login/?next={{ request.path }}">Login</a>
+           {% endif %}
+         {% endif %} 
+       </div>
+       </li>
+     </ul>
+   </div>
+   
+   
+ </nav>
+ <p></p>
+ <!-- Messages  -->
+ {% if messages %}
+   <div class="container-fluid">
+     <div class="Center">
+       <div class="alert alert-warning p-0" role="alert">
+           <div class="Center">
+             {% for message in messages %}
+             {{message}}
+             {% endfor %}
+         </div>
+       </div>
+     </div>
+   </div>
+ {% endif %}
+ 
+ {% if form.errors %}
+ 
+   
+ <!-- Form Errors -->
+ <div class="container-fluid">
+   
+   {% for field, errors in form.errors.items %}
+     <div class="alert alert-danger p-0" role="alert">
+         <div class="Center">
+           {% for error in errors %}
+           {{error}}
+           {% endfor %}
+         </div>
+       </div>
+       {% endfor %}
+   </div>
+   
+   
+ {% endif %} 
 
-    
-  
-
-
-
-
-  {% block content %} {% endblock %}
-
-
-
+   
  
 
-  <div class="footer">
-    <div class="containter-fluid">
-      <div class="row justify-content-center my-2">
-      <div class="col-auto">
-      This site made with love by <a class='a' href="{% url 'home:whoami'%}">Thomas!</a>
-    </div>
-      <div class="col-auto px-0 my-0 ">
-        <a href="https://github.com/ThomSullivan" target="_blank" rel="noopener noreferrer"> 
-          <i class="fa-brands fa-github"></i>
-         </a> 
 
-     </div>
-     <div class="col-auto px-1 my-0">
-         <a href="https://www.linkedin.com/in/sullivanthom/" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-linkedin" ></i>
 
-         </a>
-     </div>
-     <div class="col-auto px-1 my-0">
-         <a href="{% url 'home:contact' %}">
-          <i class="fa-solid fa-envelope"></i>
-     </a>
-     </div>
+
+ {% block content %} {% endblock %}
+
+
+
+
+
+ <div class="footer">
+   <div class="containter-fluid">
+     <div class="row justify-content-center my-2">
+     <div class="col-auto">
+     This site made with love by <a class='a' href="{% url 'home:whoami'%}">Thomas!</a>
+   </div>
+     <div class="col-auto px-0 my-0 ">
+       <a href="https://github.com/ThomSullivan" target="_blank" rel="noopener noreferrer"> 
+         <i class="fa-brands fa-github"></i>
+        </a> 
+
     </div>
+    <div class="col-auto px-1 my-0">
+        <a href="https://www.linkedin.com/in/sullivanthom/" target="_blank" rel="noopener noreferrer">
+         <i class="fab fa-linkedin" ></i>
+
+        </a>
     </div>
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <div class="col-auto px-1 my-0">
+        <a href="{% url 'home:contact' %}">
+         <i class="fa-solid fa-envelope"></i>
+    </a>
+    </div>
+   </div>
+   </div>
+ </div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>
