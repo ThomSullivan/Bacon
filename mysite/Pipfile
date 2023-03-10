@@ -14,7 +14,6 @@ djoser = "*"
 django-filter = "*"
 django-rest-authtoken = "*"
 djangorestframework-xml = "*"
-mysqlclient = "*"
 mysql-connector-python = "*"
 django-widget-tweaks = "*"
 django-recaptcha = "*"
@@ -22,8 +21,9 @@ uritemplate = "*"
 pyyaml = "*"
 coreschema = "*"
 stripe = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.10"
